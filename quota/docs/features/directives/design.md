@@ -17,17 +17,17 @@ After every shift the team passes, the Ministry offers three directives and the 
 | Name | Type | Effect |
 |---|---|---|
 | Overtime | Risk | The belt runs 20% faster, and the multiplier rises every 3 files instead of 4 |
-| Tailwind | Boon | Everyone walks 20% faster |
+| Tailwind | Boon | Everyone walks 12% faster |
 | Second Wind | Boon | The first mistake of each shift does not break the streak |
 | Rubber Stamp | Boon | Stamping takes half as long |
 | Early Warning | Boon | Memos take effect 4 seconds later |
-| Performance Bonus | Boon | Every stamped file scores 2 extra points |
-| Austerity | Risk | The quota is 15% lower, but the multiplier is capped at x3 |
-| Red Tape | Risk | Memos arrive 25% more often, and every correct delivery scores +1 |
+| Performance Bonus | Boon | Every stamped file scores 3 extra points |
+| Austerity | Risk | The quota is 20% lower, but the multiplier is capped at x4 |
+| Red Tape | Risk | Memos arrive 50% more often, and every second correct delivery scores +1 |
 | Insurance | Boon | Mistakes cost no points. They still break the streak |
 | Second Desk | Boon | Two players can use the stamp desk at the same time |
-| Gold Rush | Boon | About 1 file in 12 is golden and scores 5 extra points when filed correctly |
-| Short Fuse | Risk | Timed memo rules (forbid, stamp, double, rush, audit) last half as long |
+| Gold Rush | Boon | About 1 file in 12 is golden and scores 3 extra points when filed correctly |
+| Short Fuse | Risk | Timed memo rules (forbid, stamp, double, rush, audit) last half as long, and memos take effect 2 seconds sooner |
 
 ## Numbers
 | Name | Value | Unit | What to watch in playtests |
@@ -43,7 +43,7 @@ After every shift the team passes, the Ministry offers three directives and the 
 
 ## Open questions
 - [ASSUMPTION] Twelve directives are enough for a first playtest. A run that passes 12 shifts uses them all.
-- [ASSUMPTION] Several directives are not balanced against each other (for example Second Wind, which is strong). Tune after seeing which cards teams fight over.
+- [ASSUMPTION] The cards were balanced against bots (bot runs, 24/11/2026): Red Tape, Tailwind and Gold Rush were too strong and Austerity too weak, so they were adjusted. Several cards (Rubber Stamp, Second Desk, Early Warning, Insurance) are mild. Tune after seeing which cards teams fight over.
 - [ASSUMPTION] Majority voting is the right choice. A single "chair" could decide instead.
 
 ## History

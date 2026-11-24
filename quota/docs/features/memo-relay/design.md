@@ -20,15 +20,15 @@ Every so often the Ministry issues a memo that changes a rule. Only one player c
 | Name | Value | Unit | What to watch in playtests |
 |---|---|---|---|
 | First memo | 10 | s into a shift | Is it too early to settle into the rush first? |
-| Memo interval | 22, minus 2 per shift, minimum 12 (a quarter shorter with Red Tape) | s | Do memos overlap and confuse? |
-| Lead time (issued to in force) | 8 (12 with the Early Warning [directive](../directives/design.md)) | s | Long enough to shout, short enough to panic? |
+| Memo interval | 22, minus 2 per shift, minimum 12 (35% shorter with Red Tape) | s | Do memos overlap and confuse? |
+| Lead time (issued to in force) | 8 (12 with Early Warning, 6 with Short Fuse, see [directives](../directives/design.md)) | s | Long enough to shout, short enough to panic? |
 | Forbid duration | 12 (6 with Short Fuse) | s | |
 | Double duration | 12 (6 with Short Fuse) | s | |
 | Rush duration | 12 (6 with Short Fuse) | s | Does the extra supply of one colour change who does what? |
 | Audit duration | 15 (8 with Short Fuse) | s | Do players freeze up while it is in force? |
 | Type mix, shift 1 | remap 50%, forbid 25%, double 25% | % | Which type causes the funniest mistakes? |
 | Type mix, shift 2 | remap 40%, forbid 20%, double 20%, rush 20% | % | |
-| Type mix, shift 3 onwards | remap 29%, forbid 14%, double 14%, rush 14%, stamp 14%, audit 14% | % | |
+| Type mix, shift 3 onwards | the second memo of each shift is always a stamp memo. Others: remap 29%, forbid 14%, double 14%, rush 14%, stamp 14%, audit 14% | % | |
 
 ## Edge cases
 - The holder disconnects after a memo is issued: the memo is lost and the team learns the rule by striking out.

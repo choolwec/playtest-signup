@@ -12,7 +12,8 @@ Everything a player needs to get in, understand the game and play comfortably: a
 5. **Pause:** `P` pauses solo practice only, and a solo game also pauses by itself when the window loses focus or is hidden. Online games cannot pause.
 6. **Leaving:** `Esc` twice within two seconds leaves the game and returns to the menu.
 7. **Room controls (host):** `L` locks or unlocks the room. The room locks automatically when shift 1 starts. A locked room refuses new players, as does a full room (6 players). A refused player sees a clear message and not the game. A player who was already in the room can always come back, for example after their window stopped drawing. Online room codes are 6 letters. The host sees who joined as a message and the room status at the bottom of the screen between shifts.
-8. Players' names are limited to 10 characters from letters, digits, space and a few symbols.
+8. A small prompt appears above your clerk when an action is available ("E: GRAB", "E: FILE IT", "E: STAMP"), and in shift 1 a hint tells new players where to go.
+9. Players' names are limited to 10 characters from letters, digits, space and a few symbols.
 
 ## Numbers
 | Name | Value | Unit | What to watch in playtests |

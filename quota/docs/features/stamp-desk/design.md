@@ -17,10 +17,10 @@ From shift 3 a stamp desk opens in the middle of the hall. Stamping a file takes
 ## Numbers
 | Name | Value | Unit | What to watch in playtests |
 |---|---|---|---|
-| Stamping time | 1.1 (0.55 with the Rubber Stamp [directive](../directives/design.md)) | s | Long enough to cause a queue, short enough not to feel like waiting? |
+| Stamping time | 1.4 (0.7 with the Rubber Stamp [directive](../directives/design.md)) | s | Long enough to cause a queue, short enough not to feel like waiting? |
 | Stamp requirement duration | 22 | s | |
 | Desk position | centre (480, 330), reach ±70 × ±42 | px | Do players keep bumping into it? |
-| Share of memos from shift 3 that are stamp memos | 1 in 5 | | Too rare to matter or too frequent? |
+| Stamp memos from shift 3 | the second memo of every shift is a stamp memo, plus the usual random share (1 in 7) | | Too rare to matter or too frequent? |
 
 ## Edge cases
 - A player who disconnects while stamping frees the desk when they are removed.
@@ -28,7 +28,7 @@ From shift 3 a stamp desk opens in the middle of the hall. Stamping a file takes
 
 ## Open questions
 - [ASSUMPTION] One desk is the right bottleneck. A second desk would reduce the need to coordinate.
-- [ASSUMPTION] 1.1 seconds is enough to cause a queue with 3 or 4 players. Tune after a playtest.
+- [ASSUMPTION] 1.4 seconds is enough to cause a queue with 3 or 4 players. Tune after a playtest. The guaranteed stamp memo exists because bot runs showed that without it the desk and its cards rarely mattered.
 
 ## History
 - 24/11/2026: designed.
