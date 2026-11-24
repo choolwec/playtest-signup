@@ -12,7 +12,8 @@ The player walks a one-screen hall, grabs one case file at a time from the movin
 5. In shift 1 the correct tray for a colour is the tray with the same colour. From shift 2 the trays are numbered and the routing is shuffled and partly hidden (see [need to know](../need-to-know/design.md)). [Memo relay](../memo-relay/design.md) can change it mid-shift.
 6. A correct delivery scores the current multiplier (see [streak multiplier](../streak-multiplier/design.md)). From shift 3 some files must be [stamped](../stamp-desk/design.md) first. A wrong delivery scores −1 (the score never goes below 0), adds 1 strike, resets the streak and shows "WRONG TRAY".
 7. Players cannot drop a file anywhere else and cannot pass files between each other.
-8. The local player sees a pulsing outline on the file they would grab, and a glow on the tray they would drop into.
+8. With the Gold Rush [directive](../directives/design.md), some files are golden (gold border and star) and score 5 extra points when filed correctly.
+9. The local player sees a pulsing outline on the file they would grab, and a glow on the tray they would drop into.
 
 ## Numbers
 | Name | Value | Unit | What to watch in playtests |

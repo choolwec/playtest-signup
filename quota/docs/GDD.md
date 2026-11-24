@@ -1,9 +1,9 @@
 # Quota: Game Design Document
 
-**Version:** 0.3 · **Updated:** 24/11/2026 · [Features](#feature-index) · [Decisions](#decisions) · [Change log](#change-log)
+**Version:** 0.4 · **Updated:** 24/11/2026 · [Features](#feature-index) · [Decisions](#decisions) · [Change log](#change-log)
 
 ## Summary
-You and 1 to 5 friends are the night crew of a Ministry sorting hall, talking on Discord while case files, drawn as playing cards, race down a belt. Every correct delivery builds a shared multiplier, and every mistake breaks it. Every shift has a quota. From the second shift nobody can see the whole picture: each player privately knows where some colours go, and every few seconds the Ministry issues a memo that changes a rule, which only one player can read. The team has to keep shouting what they know while they work. From the third shift a stamp desk adds a bottleneck. After each pass the team votes on a directive that changes the rules for the rest of the run. A missed quota ends the run. Each shift is faster and more confusing than the last.
+You and 1 to 5 friends are the night crew of a Ministry sorting hall, talking on Discord while case files, drawn as playing cards, race down a belt. Every correct delivery builds a shared multiplier, and every mistake breaks it. Every shift has a quota. From the second shift nobody can see the whole picture: each player privately knows where some colours go, and every few seconds the Ministry issues a memo that changes a rule, which only one player can read. The team has to keep shouting what they know while they work. From the third shift a stamp desk adds a bottleneck. After each pass the team votes on a directive that changes the rules for the rest of the run. A missed quota ends the run. Each shift is faster and more confusing than the last. Clear shift 10 and the Ministry's twist arrives: you have been promoted to the department that writes the memos. Then the run continues as endless overtime.
 
 | | |
 |---|---|
@@ -40,9 +40,11 @@ files arrive → ask who knows → grab → (stamp) → right tray → score x s
 | File sorting | designed | MVP | Grab case files off the belt, carry one at a time to the matching tray | [design](features/crate-sorting/design.md) |
 | Streak multiplier | designed | MVP | Correct deliveries in a row raise a shared multiplier up to x5. A mistake resets it | [design](features/streak-multiplier/design.md) |
 | Need to know | designed | MVP | From shift 2 the routing is shuffled and each player privately sees only some colours | [design](features/need-to-know/design.md) |
-| Memo relay | designed | MVP | The player who knows a colour privately receives its rule change and must relay it by voice | [design](features/memo-relay/design.md) |
+| Memo relay | designed | MVP | The player who knows a colour privately receives its rule change (six kinds) and must relay it by voice | [design](features/memo-relay/design.md) |
 | Stamp desk | designed | MVP | From shift 3, a one-at-a-time desk. Memos can require files of a colour to be stamped | [design](features/stamp-desk/design.md) |
-| Directives | designed | MVP | After each pass the team votes on one of three rule cards that last for the run | [design](features/directives/design.md) |
+| Story and ending | designed | MVP | Ministry notices each shift and a twist promotion at shift 10, then endless overtime | [design](features/story-and-ending/design.md) |
+| Controls and options | designed | MVP | How-to-play screen, keyboard and controller, accessibility options, pause, room lock | [design](features/controls-and-options/design.md) |
+| Directives | designed | MVP | After each pass the team votes on one of three of twelve rule cards that last for the run | [design](features/directives/design.md) |
 | Shift progression | designed | MVP | 75 s shifts with a quota and rising speed. A missed quota ends the run | [design](features/shift-progression/design.md) |
 | Online rooms | idea | MVP | Room code, host-run game, friends join from their own PCs | — |
 | Memo library | idea | later | Many more memo types and generated variety so they do not repeat | — |
@@ -68,6 +70,8 @@ files arrive → ask who knows → grab → (stamp) → right tray → score x s
 | D-009 | 24/11/2026 | Introduce rules one shift at a time: shift 1 plain, shift 2 need to know, shift 3 stamp desk | all at once from shift 1 | the user dislikes games that give no direction, so each new rule is announced on its own shift | [shift progression](features/shift-progression/design.md) |
 | D-010 | 24/11/2026 | The routing is split between players (need to know) instead of being public | keep the routing public and rely on memos only | feedback that carrying files to trays was not interesting enough. Constant questions on voice are the point of the game | [need to know](features/need-to-know/design.md) |
 | D-011 | 24/11/2026 | Add a one-at-a-time stamp desk and a vote on directives between shifts | a second carry slot; contracts and orders | the desk adds a time bottleneck that forces role-sharing out loud, and directives give a build layer like Balatro's jokers | [stamp desk](features/stamp-desk/design.md), [directives](features/directives/design.md) |
+| D-012 | 24/11/2026 | A satirical story with a twist at shift 10, and endless overtime after it | no story; a fixed ending that stops the run | the user loves stories with a twist, and a finished game needs an ending. The twist (you write the memos) comes from the game's own mechanic | [story and ending](features/story-and-ending/design.md) |
+| D-013 | 24/11/2026 | Difficulty curve eased so a competent group can reach the ending | keep the steeper curve | the ending should be reachable. Bots with a good relay now usually clear shift 10, and humans are slower | [shift progression](features/shift-progression/design.md) |
 
 ## Open questions
 - **Assumptions to confirm:** engine and framework for production (D-001 covers the prototype only); the group size you usually play with; whether the memo holder should rotate automatically (assumed yes).
@@ -82,5 +86,6 @@ files arrive → ask who knows → grab → (stamp) → right tray → score x s
 
 ## Change log
 **0.1 (24/11/2026):** first draft with three core features; D-001 to D-005 logged.
+**0.4 (24/11/2026):** finishing pass: [story and ending](features/story-and-ending/design.md) and [controls and options](features/controls-and-options/design.md) designed; rush and audit memos, four more directives, gold files, second music progression, easier difficulty curve; D-012 and D-013 logged.
 **0.3 (24/11/2026):** gameplay pass after feedback that the core mechanic was not interesting enough: [need to know](features/need-to-know/design.md), [stamp desk](features/stamp-desk/design.md) and [directives](features/directives/design.md) designed; D-009 to D-011 logged.
 **0.2 (24/11/2026):** presentation pass: [art and sound](features/art-and-sound/design.md) designed, [streak multiplier](features/streak-multiplier/design.md) added, crates renamed files and bins renamed trays; D-006 to D-008 logged.

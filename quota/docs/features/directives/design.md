@@ -24,6 +24,10 @@ After every shift the team passes, the Ministry offers three directives and the 
 | Performance Bonus | Boon | Every stamped file scores 2 extra points |
 | Austerity | Risk | The quota is 15% lower, but the multiplier is capped at x3 |
 | Red Tape | Risk | Memos arrive 25% more often, and every correct delivery scores +1 |
+| Insurance | Boon | Mistakes cost no points. They still break the streak |
+| Second Desk | Boon | Two players can use the stamp desk at the same time |
+| Gold Rush | Boon | About 1 file in 12 is golden and scores 5 extra points when filed correctly |
+| Short Fuse | Risk | Timed memo rules (forbid, stamp, double, rush, audit) last half as long |
 
 ## Numbers
 | Name | Value | Unit | What to watch in playtests |
@@ -38,7 +42,7 @@ After every shift the team passes, the Ministry offers three directives and the 
 - Directives that only help when a feature is present (Rubber Stamp, Performance Bonus) can be adopted before the stamp desk opens in shift 3. This is intended, as a long-term bet.
 
 ## Open questions
-- [ASSUMPTION] Eight directives are enough for a first playtest. A run that passes many shifts will see the pool run dry.
+- [ASSUMPTION] Twelve directives are enough for a first playtest. A run that passes 12 shifts uses them all, and from then on no draft is offered.
 - [ASSUMPTION] Several directives are not balanced against each other (for example Second Wind, which is strong). Tune after seeing which cards teams fight over.
 - [ASSUMPTION] Majority voting is the right choice. A single "chair" could decide instead.
 

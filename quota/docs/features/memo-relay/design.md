@@ -7,7 +7,7 @@ Every so often the Ministry issues a memo that changes a rule. Only one player c
 ## Rules
 1. The first memo of a shift is issued after the first-memo delay. After that, memos come at the memo interval.
 2. In shift 1 each memo goes to one human player, chosen in turn so that everyone holds one in rotation. From shift 2 a memo goes to the registrar of the colour it is about (see [need to know](../need-to-know/design.md)). Bots never hold memos.
-3. A memo has a type: **remap** (a colour's correct tray changes), **forbid** (touching one colour is not allowed for a time), **double** (one colour scores double for a time) or, from shift 3, **stamp** (one colour must be stamped for a time, see [stamp desk](../stamp-desk/design.md)).
+3. A memo has a type: **remap** (a colour's correct tray changes), **forbid** (touching one colour is not allowed for a time), **double** (one colour scores double for a time), from shift 2 **rush** (one colour arrives twice as often for a time) or, from shift 3, **stamp** (one colour must be stamped for a time, see [stamp desk](../stamp-desk/design.md)) and **audit** (every mistake costs 3 points for a time, not tied to a colour, so it goes to a rotating holder).
 4. The holder sees the memo text, and a countdown to when it takes effect, in a private strip under the top bar.
 5. Everyone sees a banner "MEMO ISSUED - SOMEONE HAS NEW ORDERS - IN FORCE IN n s". The banner never shows the content or the holder.
 6. After the lead time the memo is in force for everyone. Trays and files keep their old labels (decision D-005 in the [GDD](../../GDD.md#decisions)).
@@ -22,10 +22,13 @@ Every so often the Ministry issues a memo that changes a rule. Only one player c
 | First memo | 10 | s into a shift | Is it too early to settle into the rush first? |
 | Memo interval | 22, minus 2 per shift, minimum 12 | s | Do memos overlap and confuse? |
 | Lead time (issued to in force) | 8 (12 with the Early Warning [directive](../directives/design.md)) | s | Long enough to shout, short enough to panic? |
-| Forbid duration | 12 | s | |
-| Double duration | 12 | s | |
-| Type mix, shifts 1 and 2 | remap 50%, forbid 25%, double 25% | % | Which type causes the funniest mistakes? |
-| Type mix, shift 3 onwards | remap 40%, forbid 20%, double 20%, stamp 20% | % | |
+| Forbid duration | 12 (6 with Short Fuse) | s | |
+| Double duration | 12 (6 with Short Fuse) | s | |
+| Rush duration | 12 (6 with Short Fuse) | s | Does the extra supply of one colour change who does what? |
+| Audit duration | 15 (8 with Short Fuse) | s | Do players freeze up while it is in force? |
+| Type mix, shift 1 | remap 50%, forbid 25%, double 25% | % | Which type causes the funniest mistakes? |
+| Type mix, shift 2 | remap 40%, forbid 20%, double 20%, rush 20% | % | |
+| Type mix, shift 3 onwards | remap 29%, forbid 14%, double 14%, rush 14%, stamp 14%, audit 14% | % | |
 
 ## Edge cases
 - The holder disconnects after a memo is issued: the memo is lost and the team learns the rule by striking out.
@@ -40,5 +43,6 @@ Every so often the Ministry issues a memo that changes a rule. Only one player c
 
 ## History
 - 24/11/2026: designed. A throwaway version exists in [the prototype](../../../prototypes/memo-relay/index.html).
+- 24/11/2026: rush and audit memo types added in the finishing pass.
 - 24/11/2026: from shift 2 memos go to the colour's registrar and a stamp memo type was added.
 - 24/11/2026: wording changed from crates and bins to files and trays. The holder's memo is now a typed paper strip with an "EYES ONLY" stamp, and the public cue is a hazard-striped banner.
