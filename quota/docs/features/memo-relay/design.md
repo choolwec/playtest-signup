@@ -2,19 +2,19 @@
 
 **Status:** designed · **Updated:** 24/11/2026 · [GDD](../../GDD.md)
 
-Every so often the Ministry issues a memo that changes a rule. Only one player can read it. They have to tell the others by voice while everyone keeps sorting crates. Everyone sees that a memo exists, but nobody except the holder sees what it says, and nothing on the floor changes to show the new rule. This is the game's one twist and it serves the pillar *Talk or fail*.
+Every so often the Ministry issues a memo that changes a rule. Only one player can read it. They have to tell the others by voice while everyone keeps sorting files. Everyone sees that a memo exists, but nobody except the holder sees what it says, and nothing on the floor changes to show the new rule. This is the game's one twist and it serves the pillar *Talk or fail*.
 
 ## Rules
 1. The first memo of a shift is issued after the first-memo delay. After that, memos come at the memo interval.
 2. Each memo goes to one human player, chosen in turn so that everyone holds one in rotation. Bots never hold memos.
-3. A memo has a type: **remap** (a colour's correct bin changes), **forbid** (touching one colour is not allowed for a time) or **double** (one colour scores double for a time).
+3. A memo has a type: **remap** (a colour's correct tray changes), **forbid** (touching one colour is not allowed for a time) or **double** (one colour scores double for a time).
 4. The holder sees the memo text, and a countdown to when it takes effect, in a private strip under the top bar.
 5. Everyone sees a banner "MEMO ISSUED - SOMEONE HAS NEW ORDERS - IN FORCE IN n s". The banner never shows the content or the holder.
-6. After the lead time the memo is in force for everyone. Bins and crates keep their old labels (decision D-005 in the [GDD](../../GDD.md#decisions)).
+6. After the lead time the memo is in force for everyone. Trays and files keep their old labels (decision D-005 in the [GDD](../../GDD.md#decisions)).
 7. A remap lasts until the end of the shift unless a later remap replaces it.
-8. Touching a forbidden crate destroys it and gives 1 strike. The forbid ends after its duration.
+8. Touching a forbidden file destroys it and gives 1 strike. The forbid ends after its duration.
 9. In solo practice, pressing F "shouts" the oldest unshouted memo. Bots then follow it once it is in force. Bots that were not told keep following the old rule.
-10. When the shift ends, a memo report lists each memo with a verdict. A remap is **lost in relay** when the team made at least 2 deliveries to the old bin and no more good deliveries than bad ones. Otherwise it is **relayed** (or **not tested** if no matching delivery happened).
+10. When the shift ends, a memo report lists each memo with a verdict. A remap is **lost in relay** when the team made at least 2 deliveries to the old tray and no more good deliveries than bad ones. Otherwise it is **relayed** (or **not tested** if no matching delivery happened).
 
 ## Numbers
 | Name | Value | Unit | What to watch in playtests |
@@ -39,3 +39,4 @@ Every so often the Ministry issues a memo that changes a rule. Only one player c
 
 ## History
 - 24/11/2026: designed. A throwaway version exists in [the prototype](../../../prototypes/memo-relay/index.html).
+- 24/11/2026: wording changed from crates and bins to files and trays. The holder's memo is now a typed paper strip with an "EYES ONLY" stamp, and the public cue is a hazard-striped banner.
