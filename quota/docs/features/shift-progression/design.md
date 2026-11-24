@@ -9,8 +9,9 @@ A run is a chain of 75-second shifts. Each has a quota the team must reach, and 
 2. The file spawn interval depends on the player count and the shift number. More players means more files.
 3. The quota is a share of the files expected to spawn in the shift, multiplied by an assumed average multiplier (rounded down). The share rises each shift up to a cap.
 4. When the timer reaches 0 the shift ends. Score at or above the quota is a pass and shows a memo report. Anything lower ends the run.
-5. After a pass the host starts the next shift. After a failure the host can start a new run, which resets to shift 1. Nothing is saved.
+5. After a pass the host opens the directive draft, and the next shift then starts by itself. After a failure the host can start a new run, which resets to shift 1 and clears the directives. Nothing is saved.
 6. Each new shift is faster (belt speed, spawn rate) and issues memos more often.
+7. New rules are introduced one shift at a time, each announced on the shift's opening banner: shift 1 sorts by colour with everything visible, shift 2 adds [need to know](../need-to-know/design.md), shift 3 opens the [stamp desk](../stamp-desk/design.md). After every pass the team adopts a [directive](../directives/design.md) before the next shift.
 
 ## Numbers
 | Name | Value | Unit | What to watch in playtests |

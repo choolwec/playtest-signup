@@ -9,8 +9,8 @@ The player walks a one-screen hall, grabs one case file at a time from the movin
 2. Each file is red (diamond), blue (circle) or yellow (triangle), and also carries the letters R, B or Y.
 3. A player carries at most one file. Pressing the action key within the pick-up radius of a file, while standing in the pick-up zone, picks it up. If no file is in range, nothing happens.
 4. Pressing the action key while carrying and standing in the tray zone, within a tray's half-width, delivers the file to that tray.
-5. The correct tray for a colour starts as the tray with the same colour. [Memo relay](../memo-relay/design.md) can change it mid-shift.
-6. A correct delivery scores the current multiplier (see [streak multiplier](../streak-multiplier/design.md)). A wrong delivery scores −1 (the score never goes below 0), adds 1 strike, resets the streak and shows "WRONG TRAY".
+5. In shift 1 the correct tray for a colour is the tray with the same colour. From shift 2 the trays are numbered and the routing is shuffled and partly hidden (see [need to know](../need-to-know/design.md)). [Memo relay](../memo-relay/design.md) can change it mid-shift.
+6. A correct delivery scores the current multiplier (see [streak multiplier](../streak-multiplier/design.md)). From shift 3 some files must be [stamped](../stamp-desk/design.md) first. A wrong delivery scores −1 (the score never goes below 0), adds 1 strike, resets the streak and shows "WRONG TRAY".
 7. Players cannot drop a file anywhere else and cannot pass files between each other.
 8. The local player sees a pulsing outline on the file they would grab, and a glow on the tray they would drop into.
 
@@ -40,4 +40,5 @@ The player walks a one-screen hall, grabs one case file at a time from the movin
 
 ## History
 - 24/11/2026: designed. A throwaway version exists in [the prototype](../../../prototypes/memo-relay/index.html).
+- 24/11/2026: trays become numbered and shuffled from shift 2.
 - 24/11/2026: renamed crates to files and bins to trays; belt moved down to make room for the memo strips.

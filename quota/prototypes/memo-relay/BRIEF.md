@@ -26,8 +26,10 @@ The easiest way is the single file `quota/dist/quota.html` (generated from `inde
 - **Solo practice:** press "Solo practice". You and two bots play. Press `F` to shout a memo to the bots.
 - **Same computer, two tabs:** open the page in two tabs of the same browser. Host in one (same-computer button), join in the other with the same code.
 - **Friends online:** one person hosts and shares the 5-letter code. Friends open the same page and join. Voice stays on Discord.
-- **Controls:** `WASD` or arrow keys to move, `E` or `Space` to pick up or drop at a tray, `F` to shout (bots only), `Enter` to start the next shift (host), `M` music, `N` sound effects, `C` screen effect.
+- **Controls:** `WASD` or arrow keys to move, `E` or `Space` to pick up or drop at a tray, `F` to shout (bots only), `Enter` to move on (host), `1` `2` `3` to vote on directives, `M` music, `N` sound effects, `C` screen effect.
 
 ## What to watch (debug measures)
+
+Rules arrive one shift at a time: shift 1 is plain, shift 2 splits the routing between players, shift 3 opens the stamp desk, and the team votes on a directive after each pass. Listen for whether people ask each other where a colour goes in shift 2.
 
 The results screen lists every memo and whether it was relayed in time. A "lost in relay" verdict means the team delivered files under the old rule after the new one took effect.
