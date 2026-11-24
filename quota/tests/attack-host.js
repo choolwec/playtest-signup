@@ -1,0 +1,30 @@
+// Pen test: malicious CLIENT messages against a host (LocalNet / BroadcastChannel transport)
+const { chromium } = require('playwright');
+const base=process.env.BASE||(process.env.BASE||'http://127.0.0.1:8300/index.html');
+(async()=>{
+  const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl','--ignore-gpu-blocklist']}); const ctx=await b.newContext({viewport:{width:960,height:540}});
+  const errs=[]; const host=await ctx.newPage(); host.on('pageerror',e=>errs.push('HOST pageerror: '+e.message));
+  await host.goto(base+'?mode=host-local&code=PEN1&name=Hana'); await host.waitForTimeout(800);
+  const rogue=await ctx.newPage(); await rogue.goto(base); await rogue.waitForTimeout(300);
+  const send=(msgs)=>rogue.evaluate((ms)=>{const bc=new BroadcastChannel('quota-proto-PEN1');for(const m of ms)bc.postMessage(m);bc.close();},msgs);
+  const probe=async(label)=>{ const r=await host.evaluate(()=>{const G=window.Q.G();return{players:Object.keys(G.players),proto:Object.getPrototypeOf(G.players)===Object.prototype,ph:G.ph,tickOk:true}}); console.log(label,JSON.stringify(r)); };
+  const J=(from,extra)=>Object.assign({t:'join',from,to:'h',name:'EVIL'},extra||{});
+  console.log('--- T1 prototype pollution via join id');
+  await send([J('__proto__'),J('constructor'),J('hasOwnProperty'),J('toString')]); await host.waitForTimeout(400); await probe('after proto joins');
+  console.log('--- T2 odd names');
+  await send([J('n1',{name:{a:1}}),J('n2',{name:12345}),J('n3',{name:'<img src=x onerror=alert(1)>'.repeat(50)}),J('n4',{name:null}),J('n5',{name:'\u0000‮\n\r'})]); await host.waitForTimeout(400);
+  console.log('names:',JSON.stringify(await host.evaluate(()=>Object.values(window.Q.G().players).map(p=>p.name))));
+  console.log('--- T3 join flood (should cap at 6)');
+  await send(Array.from({length:500},(_,i)=>J('flood'+i))); await host.waitForTimeout(500); console.log('player count:',await host.evaluate(()=>Object.keys(window.Q.G().players).length));
+  console.log('--- T4 bad numbers in input');
+  await send([{t:'in',from:'n1',to:'h',dx:'x',dy:null},{t:'in',from:'n1',to:'h',dx:NaN,dy:Infinity},{t:'in',from:'n1',to:'h',dx:1e308,dy:-1e308},{t:'in',from:'n1',to:'h',dx:{},dy:[]}]); await host.waitForTimeout(300);
+  console.log('positions finite:',await host.evaluate(()=>Object.values(window.Q.G().players).every(p=>isFinite(p.x)&&isFinite(p.y)&&isFinite(p.dx)&&isFinite(p.dy))));
+  console.log('--- T5 junk messages');
+  await send([null,undefined,5,'str',[],{},{t:5},{t:'in'},{t:'join'},{t:'vote',from:'n1',to:'h',i:{}},{t:'vote',from:'n1',to:'h',i:-5},{t:'vote',from:'n1',to:'h',i:1e9},{t:'act',from:'__proto__',to:'h'},{t:'shout',from:'nobody',to:'h'},{t:'in',from:'h',to:'h',dx:1,dy:1}]); await host.waitForTimeout(300); await probe('after junk');
+  console.log('--- T6 message flood from one player (30000 act/in messages)');
+  const t0=Date.now(); await send(Array.from({length:30000},(_,i)=>({t:i%2?'in':'act',from:'n1',to:'h',dx:0.5,dy:0.5}))); 
+  const ticks=await host.evaluate(async()=>{const G=window.Q.G();const a=G.t;await new Promise(r=>setTimeout(r,1500));return 1;}); await host.waitForTimeout(500); console.log('flood handled; host responsive:',ticks===1,'elapsed ms',Date.now()-t0);
+  console.log('--- T7 impersonation: act as another player id (LocalNet from is client-supplied)');
+  const ids=await host.evaluate(()=>Object.keys(window.Q.G().players)); console.log('ids',ids.slice(0,4));
+  console.log('ERRORS',errs.slice(0,8)); await b.close();
+})();

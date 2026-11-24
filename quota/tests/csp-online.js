@@ -1,0 +1,11 @@
+const { chromium } = require('playwright');
+const base='file:///home/user/playtest-signup/quota/dist/quota.html';
+(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl','--ignore-gpu-blocklist']});const errs=[];
+ const mk=async(q)=>{const c=await b.newContext({viewport:{width:960,height:540}});const p=await c.newPage();p.on('pageerror',e=>errs.push('pageerror '+e.message));p.on('console',m=>{if(/Content Security|Refused to/i.test(m.text()))errs.push('CSP: '+m.text().slice(0,200))});await p.goto(base+q);return p;};
+ const host=await mk('?mode=host-online&name=Hana');await host.waitForTimeout(3000);const rc=await host.evaluate(()=>roomCode);
+ const cli=await mk('?mode=join-online&name=Cleo&code='+rc);await cli.waitForTimeout(7000);
+ console.log('online with CSP: code',rc,'roster',await host.evaluate(()=>window.Q.S().pl.map(p=>p[4])));
+ const solo=await mk('?mode=solo&name=T');await solo.waitForTimeout(400);await solo.keyboard.press('Enter');await solo.waitForTimeout(4500);
+ console.log('solo plays: phase',await solo.evaluate(()=>window.Q.G().ph),'t',await solo.evaluate(()=>window.Q.G().t));
+ console.log('worker/audio ok:',await solo.evaluate(()=>{try{return AU.flags()}catch(e){return String(e)}}));
+ console.log('CSP/page errors:',errs);await b.close();})();
