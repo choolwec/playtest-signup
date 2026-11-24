@@ -20,7 +20,7 @@ RESULT:     (pending: needs a playtest with friends)
 
 ## How to run
 
-Download this folder (`index.html` and `peerjs.min.js` must stay together) and open `index.html` in Chrome or Edge. Online rooms use the free PeerJS signalling server and need an internet connection. Each friend does the same on their own PC.
+The easiest way is the single file `quota/dist/quota.html` (generated from `index.html` with `peerjs.min.js` embedded). Save it anywhere and open it in Chrome or Edge, and send the same file to friends. If you use the folder version instead, `index.html` and `peerjs.min.js` must stay together. Online rooms use the free PeerJS signalling server and need an internet connection. Each friend does the same on their own PC.
 
 - **Solo practice:** press "Solo practice". You and two bots play. Press `F` to shout a memo to the bots.
 - **Same computer, two tabs:** open the page in two tabs of the same browser. Host in one (same-computer button), join in the other with the same code.
