@@ -11,8 +11,10 @@ NODE_PATH=$(npm root -g) node ending.js         # promotion ending, pause, gamep
 NODE_PATH=$(npm root -g) node lives.js          # two lives per run
 NODE_PATH=$(npm root -g) node long-sim.js       # bot-only runs to shift 12 for 2, 3, 4 and 6 players
 NODE_PATH=$(npm root -g) node audio.js          # offline render of the music (levels, peak, NaN)
+NODE_PATH=$(npm root -g) node csp-online.js     # run from the tests folder after building: strict CSP, confirm before going online, release build
+NODE_PATH=$(npm root -g) node bad-mode.js       # bad URL mode parameters must not break the game
 NODE_PATH=$(npm root -g) node attack-host.js    # hostile client messages against a host
 NODE_PATH=$(npm root -g) node attack-client.js  # hostile host messages against a client
 ```
 
-Set `BASE=file:///.../quota/dist/quota.html` to test the built single file. Set `OUT=/some/dir` to choose where screenshots are written. These scripts were written during development and use test hooks on `window.Q`. Some set `G.readyT=0` to skip the get-ready countdown.
+Set `BASE=file:///.../quota/dist/quota-test.html` to test the built single file (the release `quota.html` has the test hooks removed, so use `quota-test.html` for these tests). Set `OUT=/some/dir` to choose where screenshots are written. These scripts were written during development and use test hooks on `window.Q`. Some set `G.readyT=0` to skip the get-ready countdown.
