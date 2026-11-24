@@ -30,4 +30,4 @@ The easiest way is the single file `quota/dist/quota.html` (generated from `inde
 
 ## What to watch (debug measures)
 
-The results screen lists every memo and whether it was relayed in time. A "lost in relay" verdict means the team delivered crates under the old rule after the new one took effect.
+The results screen lists every memo and whether it was relayed in time. A "lost in relay" verdict means the team delivered files under the old rule after the new one took effect.
