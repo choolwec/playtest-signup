@@ -6,9 +6,9 @@ After every shift the team passes, the Ministry offers three directives and the 
 
 ## Rules
 1. After a passed shift, the host presses Enter on the results screen to open the draft.
-2. Three directives are shown, drawn at random from those not yet adopted. Fewer are shown when fewer than three remain.
+2. Three directives are shown, drawn at random from those not yet adopted. Fewer are shown when fewer than three remain. When all twelve have been adopted no draft is offered and the next shift starts.
 3. Each human player votes with the keys 1, 2 or 3 and can change their vote. A vote is shown as a coloured dot on the card.
-4. The draft ends when every human has voted, when the timer runs out, or when the host presses Enter. The most-voted card wins. A tie, or no votes at all, is settled at random among the leaders.
+4. The draft ends when every human has voted, when the timer runs out, or when the host presses Enter (ignored for the first 1.5 seconds, so a double tap does not skip the vote). The most-voted card wins. A tie, or no votes at all, is settled at random among the leaders.
 5. The adopted directive is shown for a moment, then the next shift starts automatically.
 6. Directives last until the run ends (a missed quota). A new run starts with none.
 7. Adopted directives are listed in the bottom-left corner during play, marked "+" for boons and "!" for risks.
@@ -42,7 +42,7 @@ After every shift the team passes, the Ministry offers three directives and the 
 - Directives that only help when a feature is present (Rubber Stamp, Performance Bonus) can be adopted before the stamp desk opens in shift 3. This is intended, as a long-term bet.
 
 ## Open questions
-- [ASSUMPTION] Twelve directives are enough for a first playtest. A run that passes 12 shifts uses them all, and from then on no draft is offered.
+- [ASSUMPTION] Twelve directives are enough for a first playtest. A run that passes 12 shifts uses them all.
 - [ASSUMPTION] Several directives are not balanced against each other (for example Second Wind, which is strong). Tune after seeing which cards teams fight over.
 - [ASSUMPTION] Majority voting is the right choice. A single "chair" could decide instead.
 

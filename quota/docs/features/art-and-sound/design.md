@@ -6,8 +6,8 @@ The look and sound aim for the tactile, juicy feel of Balatro without copying an
 
 ## Rules
 1. **Background:** a swirling, banded paint shader. Its palette changes per shift (teal, indigo, wine, crimson) and turns green-gold on a pass and dark red on a failure. It tints red and pulses in the last 10 seconds. It pulses with the kick drum.
-2. **Screen effect:** the whole picture goes through a mild CRT pass (barrel curve, scanlines, colour fringing, glow, vignette, grain). The `C` key turns it off. If WebGL is unavailable the game falls back to a flat painted background.
-3. **Type and panels:** Pixelify Sans (open licence) embedded in the file, used for headings and numbers. Text of 19 pixels or smaller uses a plain sans-serif font, because the pixel font's capital C reads as O once the screen effect softens it. Panels have a dark outline, a drop shadow and a top highlight.
+2. **Screen effect:** the whole picture goes through a mild CRT pass (barrel curve, scanlines, colour fringing, glow, vignette, grain). The `C` key turns it off. If WebGL is unavailable, or its context is lost while playing, the game falls back to a flat painted background. If frames run slow for a few seconds the game lowers its resolution and then turns the effect off by itself, and says so. Drawing is limited to about 70 frames a second.
+3. **Type and panels:** Jersey 10 (open licence) embedded in the file, used for headings, numbers and most text. Its letters and digits stay distinct under the screen effect (the first font tried, Pixelify Sans, turned C into O and 5 into S). Text of 14 pixels or smaller uses a plain sans-serif font. Panels have a dark outline, a drop shadow and a top highlight.
 4. **Characters:** small clerks with a tie, ID badge and a name tag. They bob and squash while walking and face the way they move.
 5. **Juice:** confetti on delivery, score numbers that pop and drift, screen shake and a short freeze on a strike, rolling score counter, multiplier badge pop, flashing trays.
 6. **Music:** generated live in the browser, no audio files. From shift 4 the loop switches to a second progression (Fmaj9, Em7, Dm9, E7b9 with a different melody) so a long run does not repeat. The first progression is an 8-bar A minor loop (Am9, Dm9, G13, Cmaj9, then a turnaround with E7b9) with swing, electric piano, bass, drums and a sparse lead. Four intensity levels: 0 lobby and results (pad and piano only), 1 shift (bass, drums, lead), 2 memo pending or under 20 s left (hats, arpeggio), 3 under 8 s left (alarm ticks). Tempo rises with the level and the shift.
@@ -25,6 +25,7 @@ The look and sound aim for the tactile, juicy feel of Balatro without copying an
 ## Edge cases
 - Browsers block sound until the first click or key press, so music starts on the menu's first click.
 - The picture is drawn at the window's size (up to twice the base resolution), so it stays sharp on larger screens.
+- With reduce motion on (`R`, or the operating system's reduce-motion setting by default), the swirl moves slowly and does not pulse with the drums, and the title letters stop bobbing.
 - Players on separate PCs each run their own music from the shared game state, so beats are not in sync across players.
 
 ## Open questions

@@ -20,7 +20,7 @@ A run is a chain of 75-second shifts. Each has a quota the team must reach, and 
 | Shift length | 75 | s | Does a shift feel too long or too short? |
 | Spawn interval, shift 1, 2 players | 1.7 | s | |
 | Spawn interval change | −0.08 per shift, minimum 0.7 | s | |
-| Spawn interval scaling | × 2 ÷ player count (minimum 2) | × | Check 2, 3, 4 and 6 players |
+| Spawn interval scaling | the interval for the shift (with its floor) × 2 ÷ player count (minimum 2), never below 0.35 | × | Check 2, 3, 4 and 6 players. More players means more files |
 | Quota share, shift 1 | 50% of expected files | % | Do friends pass shift 1 at all? |
 | Quota share growth | +4 points per shift, cap 80% | points | At which shift does the first failure usually happen? |
 | Assumed average multiplier | 2.5 | × | Do real teams average below this (quota too hard) or above it (too easy)? See [streak multiplier](../streak-multiplier/design.md) |

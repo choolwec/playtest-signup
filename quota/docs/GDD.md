@@ -1,6 +1,6 @@
 # Quota: Game Design Document
 
-**Version:** 0.4 · **Updated:** 24/11/2026 · [Features](#feature-index) · [Decisions](#decisions) · [Change log](#change-log)
+**Version:** 0.5 · **Updated:** 24/11/2026 · [Features](#feature-index) · [Decisions](#decisions) · [Change log](#change-log)
 
 ## Summary
 You and 1 to 5 friends are the night crew of a Ministry sorting hall, talking on Discord while case files, drawn as playing cards, race down a belt. Every correct delivery builds a shared multiplier, and every mistake breaks it. Every shift has a quota. From the second shift nobody can see the whole picture: each player privately knows where some colours go, and every few seconds the Ministry issues a memo that changes a rule, which only one player can read. The team has to keep shouting what they know while they work. From the third shift a stamp desk adds a bottleneck. After each pass the team votes on a directive that changes the rules for the rest of the run. A missed quota ends the run. Each shift is faster and more confusing than the last. Clear shift 10 and the Ministry's twist arrives: you have been promoted to the department that writes the memos. Then the run continues as endless overtime.
@@ -72,6 +72,8 @@ files arrive → ask who knows → grab → (stamp) → right tray → score x s
 | D-011 | 24/11/2026 | Add a one-at-a-time stamp desk and a vote on directives between shifts | a second carry slot; contracts and orders | the desk adds a time bottleneck that forces role-sharing out loud, and directives give a build layer like Balatro's jokers | [stamp desk](features/stamp-desk/design.md), [directives](features/directives/design.md) |
 | D-012 | 24/11/2026 | A satirical story with a twist at shift 10, and endless overtime after it | no story; a fixed ending that stops the run | the user loves stories with a twist, and a finished game needs an ending. The twist (you write the memos) comes from the game's own mechanic | [story and ending](features/story-and-ending/design.md) |
 | D-013 | 24/11/2026 | Difficulty curve eased so a competent group can reach the ending | keep the steeper curve | the ending should be reachable. Bots with a good relay now usually clear shift 10, and humans are slower | [shift progression](features/shift-progression/design.md) |
+| D-014 | 24/11/2026 | Use Jersey 10 as the pixel font, and a plain sans font for the smallest text | keep Pixelify Sans | QA found Pixelify Sans turns C into O and 5 into S once the screen effect softens it, which broke quotas and headings | [art and sound](features/art-and-sound/design.md) |
+| D-015 | 24/11/2026 | Treat every network message as untrusted: validate on both sides, null-prototype player map, rate limits, room code of 6 letters, room lock, strict player id format | trust friends | the host and clients accept messages from other computers, and a malformed one broke a client's screen and the host's player list | [controls and options](features/controls-and-options/design.md) |
 
 ## Open questions
 - **Assumptions to confirm:** engine and framework for production (D-001 covers the prototype only); the group size you usually play with; whether the memo holder should rotate automatically (assumed yes).
@@ -86,6 +88,7 @@ files arrive → ask who knows → grab → (stamp) → right tray → score x s
 
 ## Change log
 **0.1 (24/11/2026):** first draft with three core features; D-001 to D-005 logged.
+**0.5 (24/11/2026):** QA and hardening pass: soft-lock when the directive pool runs out, a client dropped when its window stopped drawing, zoomed screen in small windows, unreadable glyphs (font swapped), keyboard layouts, stale memos, memo and shuffle rules matched to the docs, refused-player screen, registrar reassignment; D-014 and D-015 logged.
 **0.4 (24/11/2026):** finishing pass: [story and ending](features/story-and-ending/design.md) and [controls and options](features/controls-and-options/design.md) designed; rush and audit memos, four more directives, gold files, second music progression, easier difficulty curve; D-012 and D-013 logged.
 **0.3 (24/11/2026):** gameplay pass after feedback that the core mechanic was not interesting enough: [need to know](features/need-to-know/design.md), [stamp desk](features/stamp-desk/design.md) and [directives](features/directives/design.md) designed; D-009 to D-011 logged.
 **0.2 (24/11/2026):** presentation pass: [art and sound](features/art-and-sound/design.md) designed, [streak multiplier](features/streak-multiplier/design.md) added, crates renamed files and bins renamed trays; D-006 to D-008 logged.
