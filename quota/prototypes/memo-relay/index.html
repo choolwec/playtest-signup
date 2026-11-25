@@ -46,6 +46,11 @@
   @media (max-height:640px){.logo{font-size:60px}.btn{padding:5px 16px;font-size:20px}#menu{gap:5px}#help{display:none}.tag{margin:0}}
   #how .card{box-sizing:border-box;max-height:90vh}
   body.rm .logo span{animation:none}
+  .btn.nomin{min-width:0}
+  #confirm{position:absolute;inset:0;z-index:6;display:none;align-items:center;justify-content:center;background:rgba(4,12,12,.92)}
+  #confirm.show{display:flex}
+  #confirm .card{max-width:560px;background:#efe3c2;color:#2b2118;border:6px solid #08161a;border-radius:16px;padding:22px 30px;box-shadow:0 10px 0 rgba(0,0,0,.5);text-align:center;font-size:24px;line-height:1.3}
+  #confirm .row{justify-content:center;margin-top:16px}
 </style>
 </head>
 <body>
@@ -56,14 +61,15 @@
   <div class="row"><label class="small" for="name">NAME</label> <input id="name" maxlength="10" placeholder="YOU" autocomplete="off"></div>
   <button class="btn hot" id="bSolo">Solo practice (you + 2 bots)</button>
   <button class="btn" id="bHost">Host a room (friends online)</button>
-  <div class="row"><input id="code" maxlength="6" placeholder="CODE" aria-label="Room code" autocomplete="off"> <button class="btn" id="bJoin">Join online</button></div>
+  <div class="row"><input id="code" maxlength="8" placeholder="CODE" aria-label="Room code" autocomplete="off"> <button class="btn" id="bJoin">Join online</button></div>
   <div class="row"><span class="small">Same computer, two tabs:</span> <button class="btn" id="bHostL">Host</button> <button class="btn" id="bJoinL">Join</button></div>
-  <div class="row"><button class="btn" id="bHow" style="min-width:0">How to play (H)</button></div>
+  <div class="row"><button class="btn nomin" id="bHow">How to play (H)</button></div>
   <div id="rec"></div>
   <div id="status"></div>
   <div id="help">Move: WASD / arrows. Pick up and drop: E or Space. Shout memo to bots (solo): F. Results and next steps: Enter (host). Vote on directives: 1, 2 or 3.<br>
   M music, N sound effects, C screen effect. Voice chat stays on Discord. Only one player sees each memo.</div>
 </div>
+<div id="confirm" role="dialog" aria-modal="true" aria-label="Confirm"><div class="card"><div id="cText"></div><div class="row"><button class="btn" id="cYes">Continue</button><button class="btn" id="cNo">Cancel</button></div></div></div>
 <div id="how" role="dialog" aria-modal="true" aria-label="How to play"><div class="card">
   <h2>HOW TO PLAY</h2>
   <p>You and your friends are Ministry clerks. Sort the files off the belt before the shift timer ends. Reach the quota to pass. Miss it and the run is over. Talk on voice chat the whole time.</p>
@@ -103,6 +109,8 @@ const COL=[{k:'R',name:'RED',hex:'#ff5a4e',dark:'#8a2018'},{k:'B',name:'BLUE',he
 const HUES=['#8affc1','#ff8ad8','#b79bff','#ffa86b','#7be3ff','#d4ff6b'];
 const SKINS=['#f2c9a0','#d9a273','#a8704a','#7a4a2e','#f6d9bd','#c68a5c'];
 const INK='#10121a', PAPER='#f6ecd0';
+
+const LOCAL_ENABLED=true;   // build.py sets this to false in the release build (same-computer mode has no authentication)
 
 /* ============================ HOST SIMULATION ============================ */
 let G=newGame();
@@ -343,6 +351,7 @@ class LocalNet{ // BroadcastChannel: two tabs of the same browser
   sendHost(m){this.bc.postMessage(Object.assign({},m,{from:this.me,to:'h'}));}
   sendTo(id,m){this.bc.postMessage(Object.assign({},m,{from:this.me,to:id}));}
   broadcast(m){this.bc.postMessage(Object.assign({},m,{from:this.me}));}
+  markJoined(){}
 }
 class PeerNet{ // WebRTC data channels through PeerJS cloud signalling
   constructor(code,isHost,onerr){this.isHost=isHost;this.conns={};this.me=isHost?'h':null;
@@ -351,9 +360,14 @@ class PeerNet{ // WebRTC data channels through PeerJS cloud signalling
     if(isHost){
       this.peer.on('open',()=>this.onopen&&this.onopen());
       this.peer.on('connection',c=>{
+        if(Object.keys(this.conns).length>=12){try{c.close();}catch(e){}return;}
+        c._ok=false;c._jt=[];
+        const tm=setTimeout(()=>{if(!c._ok){try{c.close();}catch(e){}}},10000);   // drop connections that never get admitted
         c.on('open',()=>{this.conns[c.peer]=c;});
-        c.on('data',d=>{if(this.onmsg)this.onmsg(Object.assign({},d,{from:c.peer}));});
-        c.on('close',()=>{delete this.conns[c.peer];if(this.onleave)this.onleave(c.peer);});});
+        c.on('data',d=>{
+          if(d&&typeof d==='object'&&d.t==='join'){const n=Date.now();c._jt=c._jt.filter(x=>n-x<10000);c._jt.push(n);if(c._jt.length>30){try{c.close();}catch(e){}return;}}
+          if(this.onmsg)this.onmsg(Object.assign({},d,{from:c.peer}));});
+        c.on('close',()=>{clearTimeout(tm);if(this.conns[c.peer]===c)delete this.conns[c.peer];if(this.onleave)this.onleave(c.peer);});});
     }else{
       this.peer.on('open',id=>{this.me=id;const c=this.peer.connect('quotaproto-'+code,{reliable:true,serialization:'json'});
         this.hc=c;c.on('open',()=>this.onopen&&this.onopen());
@@ -362,7 +376,8 @@ class PeerNet{ // WebRTC data channels through PeerJS cloud signalling
     }}
   sendHost(m){if(this.hc&&this.hc.open)this.hc.send(m);}
   sendTo(id,m){const c=this.conns[id];if(c&&c.open)c.send(m);}
-  broadcast(m){for(const id in this.conns){const c=this.conns[id];if(c.open)c.send(m);}}
+  broadcast(m){for(const id in this.conns){const c=this.conns[id];if(c.open&&c._ok)c.send(m);}}
+  markJoined(id){const c=this.conns[id];if(c)c._ok=true;}
 }
 
 /* ============================ AUDIO: procedural music and effects (no audio files) ============================ */
@@ -633,15 +648,19 @@ function toggleHow(v){const el=document.getElementById('how');const on=v==null?!
   if(on){const b=document.getElementById('bHowClose');if(b)b.focus();}
   return on;}
 const num=v=>(typeof v==='number'&&isFinite(v))?v:0;
-function cleanName(n){return typeof n==='string'?(n.replace(/[^\p{L}\p{N} _.!?-]/gu,'').trim().slice(0,10)||'PLAYER'):'PLAYER';}
+function cleanName(n){if(typeof n!=='string')return 'PLAYER';let c=n.replace(/[^\p{L}\p{N} _.!?-]/gu,'').trim().slice(0,10)||'PLAYER';
+  if(/^(host|admin|server|system|you|bot[ _-]?[a-z0-9]*)$/i.test(c))c=c.slice(0,9)+'_';return c;}
 function hostMsg(m){ // host receives from clients. Treat everything as untrusted.
   if(!m||typeof m!=='object'||typeof m.t!=='string'||typeof m.from!=='string'||!/^[A-Za-z0-9_-]{1,40}$/.test(m.from)||m.from==='h'||m.from==='__proto__')return;
   if(m.t==='join'){
+    const nj=performance.now();G.jtk=Math.min(30,(G.jtk==null?30:G.jtk)+(nj-(G.jtl||nj))*0.03);G.jtl=nj;   // at most about 30 joins per second in total
+    if(G.jtk<1)return;G.jtk--;
+    if(typeof m.name==='string'&&m.name.length>64)m.name=m.name.slice(0,64);
     let p=Object.prototype.hasOwnProperty.call(G.players,m.from)?G.players[m.from]:null;
     if(!p){
       if(Object.keys(G.players).length>=MAX_PLAYERS||(G.locked&&!G.known[m.from])){net.sendTo(m.from,{t:'refused',why:Object.keys(G.players).length>=MAX_PLAYERS?'ROOM FULL':'ROOM LOCKED'});return;}
       p=addPlayer(m.from,cleanName(m.name),{});G.known[m.from]=1;bcast({t:'ev',k:'join',x:W/2,y:130,txt:p.name+' JOINED'});}
-    p.seen=performance.now();net.sendTo(m.from,{t:'welcome',id:m.from});sendIntel(m.from);return;}
+    p.seen=performance.now();if(net.markJoined)net.markJoined(m.from);net.sendTo(m.from,{t:'welcome',id:m.from});sendIntel(m.from);return;}
   const p=Object.prototype.hasOwnProperty.call(G.players,m.from)?G.players[m.from]:null;if(!p||p.ai)return;
   const now=performance.now();p.tk=Math.min(60,(p.tk==null?60:p.tk)+(now-(p.tl||now))*0.06);p.tl=now;if(p.tk<1)return;p.tk--;   // rate limit: 60 messages per second
   p.seen=now;
@@ -657,33 +676,37 @@ function setStatus(s){$('status').textContent=s||'';}
 function startGame(m){mode=m;$('menu').style.display='none';try{localStorage.setItem('quota-name',myName);}catch(e){}AU.ensure();AU.sfx('ui');}
 function getName(){const raw=String($('name').value||'').trim();myName=raw?cleanName(raw):('P'+((Math.random()*90+10)|0));return myName;}
 function codeFromBox(n){return ($('code').value||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,n);}
-function randCode(n){const a='ABCDEFGHJKMNPQRSTUVWXYZ';let s='';for(let i=0;i<n;i++)s+=a[(Math.random()*a.length)|0];return s;}
+function randCode(n){const a='ABCDEFGHJKMNPQRSTUVWXYZ',b=new Uint32Array(n);
+  if(typeof crypto!=='undefined'&&crypto.getRandomValues)crypto.getRandomValues(b);else for(let i=0;i<n;i++)b[i]=Math.floor(Math.random()*4294967296);
+  let s='';for(let i=0;i<n;i++)s+=a[b[i]%a.length];return s;}
 function soloStart(){
   getName();isHost=true;myId='h';G=newGame();addPlayer('h',myName,{human:true});addPlayer('bot1','BOT-A',{ai:true});addPlayer('bot2','BOT-B',{ai:true});
   startGame('solo');startHostLoop();}
 function hostStart(local){
+  if(local&&!LOCAL_ENABLED){setStatus('Same-computer play is not available in this build.');return;}
   getName();isHost=true;myId='h';G=newGame();addPlayer('h',myName,{human:true});
-  roomCode=local?(codeFromBox(4)||randCode(4)):randCode(6);
+  roomCode=local?(codeFromBox(8)||randCode(6)):randCode(8);
   const ready=()=>{net.onmsg=hostMsg;net.onleave=id=>{delete G.players[id];};startGame(local?'host-local':'host-online');startHostLoop();};
-  if(local){net=new LocalNet(roomCode,true);ready();}
+  if(local){if(typeof BroadcastChannel==='undefined'){setStatus('Same-computer play is not supported by this browser.');return;}net=new LocalNet(roomCode,true);ready();}
   else{
     if(window.NO_PEERJS||typeof Peer==='undefined'){setStatus('Online play library missing. Use the same-computer buttons.');return;}
     setStatus('Opening room...');let tries=0;
     const open=()=>{net=new PeerNet(roomCode,true,e=>{
-      if(e.type==='unavailable-id'&&tries++<3){roomCode=randCode(6);open();}
+      if(e.type==='unavailable-id'&&tries++<3){roomCode=randCode(8);open();}
       else setStatus('Could not open an online room ('+(e.type||'error')+'). Check your connection.');});
       net.onopen=()=>{ready();setStatus('');};};
     open();}
 }
 function joinStart(local){
-  getName();isHost=false;const n=local?4:6;roomCode=codeFromBox(n);
-  if(roomCode.length<n){setStatus('Type the '+n+'-character room code first.');return;}
+  if(local&&!LOCAL_ENABLED){setStatus('Same-computer play is not available in this build.');return;}
+  getName();isHost=false;roomCode=codeFromBox(8);
+  if(local?roomCode.length<3:roomCode.length<8){setStatus(local?'Type the room code first.':'Type the 8-character room code first.');return;}
   const begin=()=>{net.onmsg=m=>{if(m.from==='h'||m.to)handle(m);};
     const j=()=>{if(!joined)net.sendHost({t:'join',name:myName});};
     j();const iv=setInterval(()=>{if(joined||refusedMsg){clearInterval(iv);return;}j();},500);
     setTimeout(()=>{if(!joined){setStatus('No host answered for that code. Check the code and try again.');}},9000);
     startGame(local?'join-local':'join-online');};
-  if(local){net=new LocalNet(roomCode,false);net.onopen=begin;myId=net.me;}
+  if(local){if(typeof BroadcastChannel==='undefined'){setStatus('Same-computer play is not supported by this browser.');return;}net=new LocalNet(roomCode,false);net.onopen=begin;myId=net.me;}
   else{
     if(window.NO_PEERJS||typeof Peer==='undefined'){setStatus('Online play library missing. Use the same-computer buttons.');return;}
     setStatus('Connecting...');
@@ -1158,12 +1181,22 @@ window.Q={G:()=>G,S:()=>S,memos:()=>myMemos,intel:()=>myIntel,simulate,audioStat
 
 /* ============================ BOOT ============================ */
 $('bSolo').onclick=soloStart;$('bHost').onclick=()=>hostStart(false);$('bJoin').onclick=()=>joinStart(false);
-$('bHostL').onclick=()=>hostStart(true);$('bJoinL').onclick=()=>joinStart(true);
+if($('bHostL')){$('bHostL').onclick=()=>hostStart(true);$('bJoinL').onclick=()=>joinStart(true);}
 try{$('name').value=localStorage.getItem('quota-name')||'';const rmv=localStorage.getItem('quota-rm');reduceMotion=rmv==null?matchMedia('(prefers-reduced-motion: reduce)').matches:rmv==='1';document.body.classList.toggle('rm',reduceMotion);}catch(e){}
 updateRec();$('bHow').onclick=()=>toggleHow(true);$('bHowClose').onclick=()=>toggleHow(false);
+function askConfirm(text,go){
+  $('cText').textContent=text+' This connects to the internet, and the other players will be able to see your IP address.';
+  const el=$('confirm');el.classList.add('show');
+  $('cYes').onclick=()=>{el.classList.remove('show');try{go();}catch(e){setStatus('Could not start: '+String(e.message||e).slice(0,60));}};
+  $('cNo').onclick=()=>{el.classList.remove('show');};
+}
 (function auto(){const q=new URLSearchParams(location.search);const m=q.get('mode');if(!m)return;
-  $('name').value=q.get('name')||'';$('code').value=q.get('code')||'';
-  ({solo:soloStart,'host-local':()=>hostStart(true),'join-local':()=>joinStart(true),'host-online':()=>hostStart(false),'join-online':()=>joinStart(false)})[m]();})();
+  const modes={solo:soloStart,'host-local':()=>hostStart(true),'join-local':()=>joinStart(true),'host-online':()=>hostStart(false),'join-online':()=>joinStart(false)};
+  if(!Object.prototype.hasOwnProperty.call(modes,m)||(m.indexOf('local')>=0&&!LOCAL_ENABLED))return;
+  $('name').value=q.get('name')?cleanName(q.get('name')):'';$('code').value=(q.get('code')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
+  if(m.indexOf('online')>=0)askConfirm(m==='host-online'?'Open an online room?':'Join online room '+$('code').value+'?',modes[m]);
+  else try{modes[m]();}catch(e){setStatus('Could not start: '+String(e.message||e).slice(0,60));}
+})();
 requestAnimationFrame(draw);
 </script>
 </body>
