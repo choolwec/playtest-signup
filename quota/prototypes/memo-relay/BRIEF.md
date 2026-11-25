@@ -21,10 +21,10 @@ RESULT:     (pending: needs a playtest with friends)
 
 ## How to run
 
-The easiest way is the single file `quota/dist/quota.html` (generated from `index.html` by `build.py`, with the fonts and `peerjs.min.js` embedded; run `python3 quota/prototypes/memo-relay/build.py` after any change). Save it anywhere and open it in Chrome or Edge, and send the same file to friends. If you use the folder version instead, `index.html` and `peerjs.min.js` must stay together. Online rooms use the free PeerJS signalling server and need an internet connection. Each friend does the same on their own PC.
+The easiest way is the single file `quota/dist/quota.html` (the release build, generated from `index.html` by `build.py`, with the fonts and `peerjs.min.js` embedded; run `python3 quota/prototypes/memo-relay/build.py` after any change). Save it anywhere and open it in Chrome or Edge, and send the same file to friends. If you use the folder version instead, `index.html` and `peerjs.min.js` must stay together. Online rooms use the free PeerJS signalling server and need an internet connection. Each friend does the same on their own PC.
 
 - **Solo practice:** press "Solo practice". You and two bots play. Press `F` to shout a memo to the bots.
-- **Same computer, two tabs:** open the page in two tabs of the same browser. Host in one (same-computer button), join in the other with the same code.
+- **Same computer, two tabs (development only):** open `quota-test.html` in two tabs of the same browser. Host in one (same-computer button), join in the other with the same code. The release `quota.html` does not have this mode.
 - **Friends online:** one person hosts and shares the 5-letter code. Friends open the same page and join. Voice stays on Discord.
 - **Controls:** `WASD` or arrow keys to move, `E` or `Space` to pick up or drop at a tray, `F` to shout (bots only), `Enter` to move on (host), `1` `2` `3` to vote on directives, `M` music, `N` sound effects, `C` screen effect.
 
